@@ -49,5 +49,6 @@ RUN cd /home/app/soft/code_saturne.build && make -j8 && make install
 # /home/app/soft/code_saturne.install/bin/code_saturne
 WORKDIR /home/app/
 RUN /home/app/soft/code_saturne.install/bin/code_saturne info --version
+# run a command line
 CMD /bin/bash
 # As the next steps we should copy working folder from gitlab and run
