@@ -48,5 +48,6 @@ RUN cd /home/app/soft/code_saturne.build && make -j8 && make install
 # CS will be installed into
 # /home/app/soft/code_saturne.install/bin/code_saturne
 WORKDIR /home/app/
-CMD /home/app/soft/code_saturne.install/bin/code_saturne info --version
+RUN /home/app/soft/code_saturne.install/bin/code_saturne info --version
+CMD /bin/bash
 # As the next steps we should copy working folder from gitlab and run
