@@ -33,10 +33,10 @@ brew install automake
 brew install libtool 
 
 echo "Installing python3 and PyQT5..."
-# brew install python3
+brew install python3
 # python3 -m pip install --upgrade pip
 # python3 -m pip install PyQT5
-# brew install pyqt5
+brew install pyqt5
 
 echo "Installing othe dependences.."
 brew install wget
