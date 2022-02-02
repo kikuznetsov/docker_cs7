@@ -63,12 +63,14 @@ tar xzf med-4.1.0.tar.gz
 cd med-4.1.0
 echo "Applying patch on the configure file in order to define version of HDF5 properly.."
 #make sed work as it is working under Linux
-export LC_TYPE=C
+export LC_CTYPE=C
 export LANG=C
 #patch itself
 sed -i'' -e "/H5\_VER\_MINOR=/ s_sed.*_awk \'{print \$3}\' \`_" configure
 sed -i'' -e "/H5\_VER\_MAJOR=/ s_sed.*_awk \'{print \$3}\' \`_" configure
 sed -i'' -e "/H5\_VER\_RELEASE=/ s_sed.*_awk \'{print \$3}\' \`_" configure
+export LC_CTYPE=UTF-8
+export LANG=
 echo "Configure MED and compile it"
 ./configure CC=mpicc CXX=mpic++ --prefix=${meddir} \
 	 --with-med_int=long --disable-python --disable-fortran --with-hdf5=${hdfdir} 
