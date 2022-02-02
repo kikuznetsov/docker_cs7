@@ -1,9 +1,9 @@
 echo "Creating an SSH key for you..."
-ssh-keygen -t rsa
+# ssh-keygen -t rsa
 
 echo "Please add this public key to Github \n"
 echo "https://github.com/account/ssh \n"
-read -p "Press [Enter] key after this..."
+# read -p "Press [Enter] key after this..."
 
 echo "Installing xcode-stuff"
 xcode-select --install
@@ -19,6 +19,7 @@ fi
 # Update homebrew recipes
 echo "Updating homebrew..."
 brew update
+brew upgrade
 
 echo "Installing Git..."
 brew install git
@@ -32,18 +33,18 @@ brew install automake
 brew install libtool 
 
 echo "Installing python3 and PyQT5..."
-brew install python3
-#python3 -m pip install --upgrade pip
-#python3 -m pip install PyQT5
-brew install pyqt5
+# brew install python3
+# python3 -m pip install --upgrade pip
+# python3 -m pip install PyQT5
+# brew install pyqt5
 
 echo "Installing othe dependences.."
 brew install wget
 
-softdir=${HOME}/Soft
+softdir=${HOME}/Soft/CS_INSTALL
 echo "code-saturne and its dependences will be installed into"
 echo ${softdir}
-mkdir $softdir
+mkdir ${softdir}
 
 echo "Building hdf5 from source..."
 hdfdir=${softdir}/hdf5
@@ -70,7 +71,7 @@ sed -i'' -e "/H5\_VER\_MINOR=/ s_sed.*_awk \'{print \$3}\' \`_" configure
 sed -i'' -e "/H5\_VER\_MAJOR=/ s_sed.*_awk \'{print \$3}\' \`_" configure
 sed -i'' -e "/H5\_VER\_RELEASE=/ s_sed.*_awk \'{print \$3}\' \`_" configure
 export LC_CTYPE=UTF-8
-export LANG=
+export LANG=""
 echo "Configure MED and compile it"
 ./configure CC=mpicc CXX=mpic++ --prefix=${meddir} \
 	 --with-med_int=long --disable-python --disable-fortran --with-hdf5=${hdfdir} 
@@ -97,4 +98,11 @@ ${cs_src_dir}/configure PYTHON=$(brew --prefix python3)/bin/python3 CC=mpicc FC=
 	FCFLAGS='-g' --enable-debug --enable-static
 make -j 2>&1 > /dev/null
 make install 2>&1 > /dev/null
+
+echo "Fix dynamical libraries libple in code_saturne installation..."
+otool -L ${cs_install_dir}/libexec/code_saturne/cs_solver
+
+install_name_tool -change @rpath/libple.dylib.2 ${cs_install_dir}/lib/libple.dylib.2 ${cs_install_dir}/libexec/code_saturne/cs_solver
+
+otool -L ${cs_install_dir}/libexec/code_saturne/cs_solver
 
